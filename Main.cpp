@@ -3,8 +3,7 @@
 #include <conio.h>
 #include "Main.h"
 
-const int mapX = 20;
-const int mapY = 20;
+
 
 int random_num(const int& start, const int& max)
 {
@@ -26,45 +25,6 @@ std::ostream& operator<<(std::ostream& os, Player character)
 		<< "Gold: " << character.gold << "g" << std::endl;
 	return os;
 }
-
-struct Rat : public Entity
-{
-	Rat()
-	{
-		setStartingPosition();
-		type = RAT;
-		maxHP = (type * 2) + 5;
-		currentHP = maxHP;
-		typeAsString();
-		marker = 'R';
-	}
-};
-
-struct Goblin : public Entity
-{
-	Goblin()
-	{
-		setStartingPosition();
-		type = GOBLIN;
-		maxHP = (type * 2) + 5;
-		currentHP = maxHP;
-		typeAsString();
-		marker = 'G';
-	}
-};
-
-struct Thief : public Entity
-{
-	Thief()
-	{
-		setStartingPosition();
-		type = THIEF;
-		maxHP = (type * 2) + 5;
-		currentHP = maxHP;
-		typeAsString();
-		marker = 'H';
-	}
-};
 
 struct Wolf : public Entity
 {

@@ -1,8 +1,6 @@
 #pragma once
 #include "Entity.h"
 
-//Ask Nav about this - why is this acting like the Entity struct is not defined?
-//Entity struct is defined in Entity.h which is included at the preprocessor level
 struct Player : public Entity
 {
 	Player()

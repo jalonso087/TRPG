@@ -3,9 +3,6 @@
 #include "Main.h"
 #include "Entity.h"
 
-extern int mapX;
-extern int mapY;
-
 	//function to initialize posX posY using random_num(1, mapX/Y))
 void Entity::setStartingPosition()
 {

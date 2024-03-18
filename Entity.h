@@ -3,6 +3,9 @@
 #include <conio.h>
 #include "Main.h"
 
+const int mapX = 20;
+const int mapY = 20;
+
 struct Entity
 {
 

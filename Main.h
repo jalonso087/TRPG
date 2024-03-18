@@ -4,6 +4,10 @@
 #include <vector>
 #include <iostream>
 #include "Player.h"
+#include "Rat.h"
+#include "Goblin.h"
+#include "Thief.h"
+
 
 int random_num(const int& start, const int& max);
 

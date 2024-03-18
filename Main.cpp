@@ -5,6 +5,8 @@
 #include <conio.h>
 #include <Windows.h>
 
+//THIS IS TRUNK
+
 const static int mapX = 20;
 const static int mapY = 20;
 
@@ -272,7 +274,7 @@ void entityVector()
 	entities.push_back(dungeon);
 }
 */
-void mapDisplay()
+void gameLoop()
 {
 	char Map[mapX][mapY];
 
@@ -328,6 +330,6 @@ int main()
 {
 	srand(NULL);
 
-	mapDisplay();
+	gameLoop();
 	return 0;
 }

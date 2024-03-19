@@ -1,7 +1,10 @@
 #include <string>
 #include <conio.h>
+#include <vector>
 #include "Main.h"
 #include "Entity.h"
+
+Entity entity;
 
 	//function to initialize posX posY using random_num(1, mapX/Y))
 void Entity::setStartingPosition()
@@ -41,42 +44,51 @@ void Entity::move(void)
 	//Is there a general rule of thumb for when to keep your code on one line or when to expand to multiple lines
 	switch (_getch())
 	{
-	case(KEY_UP): case(KEY_W):
-	{
-		if (posX >= 1) posX -= 1; break;
-	}
-	case(KEY_DOWN): case(KEY_S):
-	{
-		if (posX <= mapX - 2) posX += 1; break;
-	}
-	case(KEY_LEFT): case(KEY_A):
-	{
-		if (posY >= 1) posY -= 1; break;
-	}
-	case(KEY_RIGHT): case(KEY_D):
-	{
-		if (posY <= mapY - 2) posY += 1; break;
-	}
-	case(KEY_BACK):
-	{
-		if (potions > 0)
+		case(KEY_UP): case(KEY_W):
 		{
-			potions -= 1;
-			system("CLS");  std::cout << "You used 1 potion and fully healed." << std::endl;
-			currentHP = maxHP;
-			std::cin.ignore(); system("CLS");
+			if (posX >= 1) posX -= 1; break;
 		}
-		break;
+		case(KEY_DOWN): case(KEY_S):
+		{
+			if (posX <= mapX - 2) posX += 1; break;
+		}
+		case(KEY_LEFT): case(KEY_A):
+		{
+			if (posY >= 1) posY -= 1; break;
+		}
+		case(KEY_RIGHT): case(KEY_D):
+		{
+			if (posY <= mapY - 2) posY += 1; break;
+		}
+		case(KEY_BACK):
+		{
+			if (potions > 0)
+			{
+				potions -= 1;
+				system("CLS");  std::cout << "You used 1 potion and fully healed." << std::endl;
+				currentHP = maxHP;
+				std::cin.ignore(); system("CLS");
+			}
+			break;
+		}
+		case(KEY_ESC):
+		{
+			char exitChoice;
+			system("CLS");
+			std::cout << "Are you sure you would like to exit? (y/n)" << std::endl;
+			std::cin >> exitChoice;
+			if (exitChoice == 'y') { exit(EXIT_SUCCESS); }
+			system("CLS");
+			break;
+		}
 	}
-	case(KEY_ESC):
-	{
-		char exitChoice;
-		system("CLS");
-		std::cout << "Are you sure you would like to exit? (y/n)" << std::endl;
-		std::cin >> exitChoice;
-		if (exitChoice == 'y') { exit(EXIT_SUCCESS); }
-		system("CLS");
-		break;
-	}
-	}
+
+}
+
+bool Entity::collision(Entity& player, Entity &monster)
+{
+	if (monster.posX == player.posX && monster.posY == player.posY)
+		return true;
+	else
+		return false;
 }

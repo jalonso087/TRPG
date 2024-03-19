@@ -57,6 +57,7 @@ struct Entity
 	void setEnemyType(Type& monsterType);
 	void typeAsString();
 	void move(void);
+	bool collision(Entity& monster, Entity& player);
 
 
 };

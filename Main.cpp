@@ -26,70 +26,6 @@ std::ostream& operator<<(std::ostream& os, Player character)
 	return os;
 }
 
-struct Wolf : public Entity
-{
-	Wolf()
-	{
-		setStartingPosition();
-		type = WOLF;
-		maxHP = (type * 2) + 5;
-		currentHP = maxHP;
-		typeAsString();
-		marker = 'W';
-	}
-};
-
-
-struct Dragon : public Entity
-{
-	Dragon()
-	{
-		type = DRAGON;
-		maxHP = (type * 2) + 5;
-		currentHP = maxHP;
-		typeAsString();
-	}
-};
-
-struct Town : public Entity
-{
-	Town()
-	{
-		setStartingPosition();
-		type = TOWN;
-		maxHP = 255;
-		currentHP = maxHP;
-		typeAsString();
-		marker = 'T';
-	}
-};
-
-struct Dungeon : public Entity
-{
-	Dungeon()
-	{
-		setStartingPosition();
-		type = DUNGEON;
-		maxHP = 255;
-		currentHP = maxHP;
-		typeAsString();
-		marker = 'D';
-	}
-};
-/*
-void entityVector()
-{
-	std::vector<Entity> entities;
-	entities.push_back(player);
-	entities.push_back(rat);
-	entities.push_back(goblin);
-	entities.push_back(thief);
-	entities.push_back(wolf);
-	entities.push_back(town);
-	entities.push_back(dungeon);
-}
-*/
-
 void gameLoop()
 {
 	char Map[mapX][mapY];
@@ -136,6 +72,22 @@ void gameLoop()
 			std::cout << std::endl;
 		}
 		player.move();
+
+		//PROOF THAT COLLISION CHECK AGAINST ALL OBJECTS AT ONCE
+		//Turn the below into a function (after the for range loop
+		for (auto& e : entities)
+		{
+			if (entity.collision(player, e))
+			{
+				system("CLS");
+				std::cout << "You ran into " << e.typeString;
+				std::cin.ignore();
+				system("CLS");
+			}
+				
+			std::cout << entity.collision(player, e);
+		}
+
 		gotoxy(0, 0);
 		//player entity was not updating position in real time, so clearing and pushing contents again will update all entities position as in real time
 		entities.clear();
@@ -144,7 +96,7 @@ void gameLoop()
 
 int main()
 {
-	srand(NULL);
+	srand(time(0));
 
 	gameLoop();
 	return 0;

@@ -4,8 +4,6 @@
 #include "Main.h"
 #include "Entity.h"
 
-Entity entity;
-
 	//function to initialize posX posY using random_num(1, mapX/Y))
 void Entity::setStartingPosition()
 {
@@ -80,15 +78,31 @@ void Entity::move(void)
 			if (exitChoice == 'y') { exit(EXIT_SUCCESS); }
 			system("CLS");
 			break;
-		}
+		}	
 	}
-
 }
 
+//This is bugged - first instance of a collision is immediately resolving
 bool Entity::collision(Entity& player, Entity &monster)
 {
-	if (monster.posX == player.posX && monster.posY == player.posY)
+	if (player.posX == monster.posX && player.posY == monster.posY)
+	{
+		system("CLS");
+		std::cout << "You ran into " << monster.typeString;
+		//std::cin.ignore();
+		bool dummy = std::cin.get();
+		encounter(player, monster);
+		bool dummy2 = std::cin.get();
+		system("CLS");
 		return true;
-	else
-		return false;
+	}
 }
+
+void Entity::encounter(Entity& player, Entity& ent)
+{
+	system("CLS");
+	std::cout << player << std::endl;
+	std::cout << ent;
+}
+
+//implement battle options function to handle choosing between attack/heal/run

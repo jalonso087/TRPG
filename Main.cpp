@@ -3,7 +3,19 @@
 #include <conio.h>
 #include "Main.h"
 
+char Map[mapX][mapY];
 
+/*
+Entity	entity;
+Player	player;
+Rat		rat;
+Goblin	goblin;
+Thief	thief;
+Wolf	wolf;
+Dragon	dragon;
+Town	town;
+Dungeon dungeon;
+*/
 
 int random_num(const int& start, const int& max)
 {
@@ -18,17 +30,43 @@ void gotoxy(short x, short y)
 	SetConsoleCursorPosition(hStdout, position);
 }
 
-std::ostream& operator<<(std::ostream& os, Player character)
+std::ostream& operator<<(std::ostream& os, const Entity& ent)
 {
-	os << character.typeString << std::endl
-		<< "HP: " << character.currentHP << "/" << character.maxHP << std::endl
-		<< "Gold: " << character.gold << "g" << std::endl;
+	os << ent.typeString << std::endl;
+
+	if (ent.typeString != "DUNGEON" && ent.typeString != "TOWN")
+	{
+		std::cout << "HP: " << ent.currentHP << "/" << ent.maxHP << std::endl;
+	}
+	
+	if (ent.typeString == "PLAYER")
+	{
+		std::cout << "Gold: " << ent.gold << "g" << std::endl << "Potions: " << ent.potions << std::endl;
+	}
+
 	return os;
+}
+
+bool startMenu()
+{
+	int choice; 
+
+	std::cout << "Welcome to <TRPG>" << std::endl;
+	std::cout << "1. Start Game" << std::endl; 
+	std::cout << "2. Quit Game" << std::endl;
+	std::cout << "Selection: ";
+	std::cin >> choice;
+	if (choice == 1)
+		return true;
+	else
+		exit(EXIT_SUCCESS);
 }
 
 void gameLoop()
 {
-	char Map[mapX][mapY];
+	std::vector<Entity> entities;
+
+	startMenu();
 
 	Entity	entity;
 	Player	player;
@@ -40,18 +78,18 @@ void gameLoop()
 	Town	town;
 	Dungeon dungeon;
 
-	std::vector<Entity> entities;
-
+	system("CLS");
+	
 	while (player.defeated == false)
 	{
-		entities.push_back(player);
 		entities.push_back(rat);
 		entities.push_back(goblin);
 		entities.push_back(thief);
 		entities.push_back(wolf);
 		entities.push_back(town);
 		entities.push_back(dungeon);
-
+		entities.push_back(player);
+		
 		std::cout << player;
 
 		//Could not find a way to fill the 2d array with < O(n^2) complexity
@@ -67,25 +105,17 @@ void gameLoop()
 				}
 
 				std::cout << Map[i][j];
-
 			}
 			std::cout << std::endl;
 		}
 		player.move();
 
-		//PROOF THAT COLLISION CHECK AGAINST ALL OBJECTS AT ONCE
-		//Turn the below into a function (after the for range loop
-		for (auto& e : entities)
-		{
-			if (entity.collision(player, e))
-			{
-				system("CLS");
-				std::cout << "You ran into " << e.typeString;
-				std::cin.ignore();
-				system("CLS");
-			}
-				
-			std::cout << entity.collision(player, e);
+		//Remove player from the entities vector so it does not collide with itself
+		entities.pop_back();
+
+		for (auto& e : entities) 
+		{ 
+			entity.collision(player, e); 
 		}
 
 		gotoxy(0, 0);

@@ -3,12 +3,8 @@
 #include <conio.h>
 #include "Main.h"
 
-const int mapX = 20;
-const int mapY = 20;
-
 struct Entity
 {
-
 	int maxHP;
 	int currentHP;
 	int posX{ 0 };
@@ -57,7 +53,6 @@ struct Entity
 	void setEnemyType(Type& monsterType);
 	void typeAsString();
 	void move(void);
-	bool collision(Entity& monster, Entity& player);
-
-
+	bool collision(Entity& player, Entity& monster);
+	void encounter(Entity& player, Entity& ent);
 };

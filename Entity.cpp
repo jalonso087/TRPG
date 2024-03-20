@@ -90,23 +90,31 @@ bool Entity::collision(Entity& player, Entity& ent)
 		system("CLS");
 		std::cout << "You ran into " << ent.typeString;
 		//std::cin.ignore();
-		bool dummy = std::cin.get();
-		encounter(player, ent);
-		bool dummy2 = std::cin.get();
+		std::cin.get();
+		encounterHud(player, ent);
+		while (player.defeated == false && ent.defeated == false)
+		{
+			battle(player, ent);
+		}
+		player.lootGen();
 		system("CLS");
 		return true;
 	}
 }
 
-void Entity::encounter(Entity& player, Entity& ent)
+void Entity::encounterHud(Entity& player, Entity& ent)
 {
-	while (player.defeated == false && ent.defeated == false)
-	{
+	//while (player.defeated == false && ent.defeated == false)
+	//{
 		system("CLS");
 		std::cout << player << std::endl;
 		std::cout << ent;
-		battle(player, ent);
-	}
+		//battle(player, ent);
+
+		std::cout << "1. Attack" << std::endl;
+		std::cout << "2. Heal" << std::endl;
+		std::cout << "3. Run" << std::endl;
+	//}
 	
 }
 
@@ -119,9 +127,12 @@ int Entity::damage()
 
 void Entity::lootGen()
 {
+	system("CLS");
 	int goldAmount = random_num(1, 30);
-	std::cout << "You got " << gold << "gold." << std::endl;
+	std::cout << "You got " << goldAmount << "gold." << std::endl;
 	gold += goldAmount;
+	
+	maxHP += 5;
 
 	int num = random_num(1, 10);
 	if (num > 6)
@@ -135,6 +146,7 @@ void Entity::lootGen()
 		std::cout << "You got 10 health potions.";
 		potions += 10;
 	}
+	std::cin.get();
 }
 
 void Entity::checkDefeat()
@@ -146,60 +158,75 @@ void Entity::checkDefeat()
 		if (typeString != "PLAYER")
 		{
 			std::cout << "You defeated " << typeString;
-			bool dummy = std::cin.get();
+			std::cin.get();
 		}
 		else
 		{
 			std::cout << "You were defeated.";
-			bool dummy = std::cin.get();
+			std::cin.get();
 			exit(EXIT_SUCCESS);
 		}
 	}
 }
 
+void Entity::attack(Entity& ent1, Entity& ent2)
+{
+	int dmg = ent1.damage();
+
+	std::cout << ent1.typeString << " hit " << ent2.typeString << " with " << ent1.weaponString << " for " << dmg << " damage!";
+	std::cin.ignore();
+	std::cin.get();
+	
+	ent2.currentHP -= dmg;
+	
+	
+	ent2.checkDefeat();
+}
+
 //implement battle options function to handle choosing between attack/heal/run
 void Entity::battle(Entity& player, Entity& ent)
 {
-	int battleChoice; 
-	
-	std::cout << "1. Attack" << std::endl;
-	std::cout << "2. Heal" << std::endl;
-	std::cout << "3. Run" << std::endl;
-	std::cout << "Selection: ";
-	std::cin >> battleChoice;
-	switch (battleChoice)
-	{
-	case(1):
-	{
-		int dmg = player.damage();
-		std::cout << player.typeString << " hit " << ent.typeString << " for " << dmg << "damage!";
-		bool dummy = std::cin.get();
-		ent.currentHP -= dmg;
-		ent.checkDefeat();
-		player.checkDefeat();
-		break;
-	}
-	case(2):
-	{
-		std::cout << player.typeString << "uses 1 potion to heal to full health.";
-		player.potions -= 1;
-		player.currentHP = player.maxHP;
-		break;
-	}
-	case(3):
-		break;
-	}
-	
-	
+	int battleChoice;
+
+	//while (player.defeated == false && ent.defeated == false)
+	//{
+		encounterHud(player, ent);
+		std::cout << "Selection: ";
+		std::cin >> battleChoice;
+		switch (battleChoice)
+		{
+		case(1):	//attack
+		{
+			player.attack(player, ent);
+			encounterHud(player, ent);
+			if(!ent.defeated)
+				ent.attack(ent, player);
+			break;
+		}
+		case(2):	//heal
+		{
+			std::cout << player.typeString << "uses 1 potion to heal to full health." << std::endl;
+			player.potions -= 1;
+			player.currentHP = player.maxHP;
+			encounterHud(player, ent);
+			break;
+		}
+		case(3):	//run
+			player.posX += 1;
+			break;
+		}
+
+
+//	}
 }
 
  void Entity::weaponAsString()
 {
 	switch (currentWeapon)
 	{
-		case(STICK): weaponString = "STICK";
-		case(CLAW): weaponString = "CLAW";
-		case(HAMMER): weaponString = "HAMMER";
-		case(FANG): weaponString = "FANG";
+		case(STICK): weaponString = "STICK"; break;
+		case(CLAW): weaponString = "CLAW"; break;
+		case(HAMMER): weaponString = "HAMMER"; break;
+		case(FANG): weaponString = "FANG"; break;
 	}
 }

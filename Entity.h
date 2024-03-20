@@ -59,11 +59,12 @@ struct Entity
 	void typeAsString();
 	void move(void);
 	bool collision(Entity& player, Entity& ent);
-	void encounter(Entity& player, Entity& ent);
+	void encounterHud(Entity& player, Entity& ent);
 	void battle(Entity& player, Entity& ent);
 	void checkDefeat();
 	int damage();
 	void weaponAsString();
 	void lootGen();
+	void attack(Entity& player, Entity& monster);
 
 };

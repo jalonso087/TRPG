@@ -9,7 +9,10 @@ struct Rat : public Entity
 		type = RAT;
 		maxHP = (type * 2) + 5;
 		currentHP = maxHP;
+		currentWeapon = CLAW;
+		weaponAsString();
 		typeAsString();
 		marker = 'R';
 	}
+	~Rat() {}
 };

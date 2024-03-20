@@ -83,15 +83,15 @@ void Entity::move(void)
 }
 
 //This is bugged - first instance of a collision is immediately resolving
-bool Entity::collision(Entity& player, Entity &monster)
+bool Entity::collision(Entity& player, Entity& ent)
 {
-	if (player.posX == monster.posX && player.posY == monster.posY)
+	if (player.posX == ent.posX && player.posY == ent.posY)
 	{
 		system("CLS");
-		std::cout << "You ran into " << monster.typeString;
+		std::cout << "You ran into " << ent.typeString;
 		//std::cin.ignore();
 		bool dummy = std::cin.get();
-		encounter(player, monster);
+		encounter(player, ent);
 		bool dummy2 = std::cin.get();
 		system("CLS");
 		return true;
@@ -100,9 +100,106 @@ bool Entity::collision(Entity& player, Entity &monster)
 
 void Entity::encounter(Entity& player, Entity& ent)
 {
-	system("CLS");
-	std::cout << player << std::endl;
-	std::cout << ent;
+	while (player.defeated == false && ent.defeated == false)
+	{
+		system("CLS");
+		std::cout << player << std::endl;
+		std::cout << ent;
+		battle(player, ent);
+	}
+	
+}
+
+int Entity::damage()
+{
+	int dmg;
+	dmg = random_num(1, (currentWeapon+ 1) * 2);
+	return dmg;
+}
+
+void Entity::lootGen()
+{
+	int goldAmount = random_num(1, 30);
+	std::cout << "You got " << gold << "gold." << std::endl;
+	gold += goldAmount;
+
+	int num = random_num(1, 10);
+	if (num > 6)
+	{
+		std::cout << "You got a hammer!";
+		currentWeapon = HAMMER;
+		weaponAsString();
+	}
+	else if (num > 2 && num < 7)
+	{
+		std::cout << "You got 10 health potions.";
+		potions += 10;
+	}
+}
+
+void Entity::checkDefeat()
+{
+	if (currentHP <= 0)
+	{
+		defeated = true;
+		system("CLS");
+		if (typeString != "PLAYER")
+		{
+			std::cout << "You defeated " << typeString;
+			bool dummy = std::cin.get();
+		}
+		else
+		{
+			std::cout << "You were defeated.";
+			bool dummy = std::cin.get();
+			exit(EXIT_SUCCESS);
+		}
+	}
 }
 
 //implement battle options function to handle choosing between attack/heal/run
+void Entity::battle(Entity& player, Entity& ent)
+{
+	int battleChoice; 
+	
+	std::cout << "1. Attack" << std::endl;
+	std::cout << "2. Heal" << std::endl;
+	std::cout << "3. Run" << std::endl;
+	std::cout << "Selection: ";
+	std::cin >> battleChoice;
+	switch (battleChoice)
+	{
+	case(1):
+	{
+		int dmg = player.damage();
+		std::cout << player.typeString << " hit " << ent.typeString << " for " << dmg << "damage!";
+		bool dummy = std::cin.get();
+		ent.currentHP -= dmg;
+		ent.checkDefeat();
+		player.checkDefeat();
+		break;
+	}
+	case(2):
+	{
+		std::cout << player.typeString << "uses 1 potion to heal to full health.";
+		player.potions -= 1;
+		player.currentHP = player.maxHP;
+		break;
+	}
+	case(3):
+		break;
+	}
+	
+	
+}
+
+ void Entity::weaponAsString()
+{
+	switch (currentWeapon)
+	{
+		case(STICK): weaponString = "STICK";
+		case(CLAW): weaponString = "CLAW";
+		case(HAMMER): weaponString = "HAMMER";
+		case(FANG): weaponString = "FANG";
+	}
+}

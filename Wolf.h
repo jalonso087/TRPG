@@ -9,7 +9,10 @@ struct Wolf : public Entity
 		type = WOLF;
 		maxHP = (type * 2) + 5;
 		currentHP = maxHP;
+		currentWeapon = CLAW;
+		weaponAsString();
 		typeAsString();
 		marker = 'W';
 	}
+	~Wolf() {}
 };

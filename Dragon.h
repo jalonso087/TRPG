@@ -8,6 +8,9 @@ struct Dragon : public Entity
 		type = DRAGON;
 		maxHP = (type * 2) + 5;
 		currentHP = maxHP;
+		currentWeapon = FANG;
+		weaponAsString();
 		typeAsString();
 	}
+	~Dragon() {}
 };

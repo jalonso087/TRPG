@@ -9,7 +9,10 @@ struct Thief : public Entity
 		type = THIEF;
 		maxHP = (type * 2) + 5;
 		currentHP = maxHP;
+		currentWeapon = CLAW;
+		weaponAsString();
 		typeAsString();
 		marker = 'H';
 	}
+	~Thief() {}
 };

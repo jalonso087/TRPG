@@ -13,6 +13,7 @@ struct Entity
 	int potions;
 	int gold;
 	int currentWeapon;
+	std::string weaponString;
 	std::string typeString;
 	bool defeated = false;
 	char marker{ ' ' };
@@ -31,8 +32,10 @@ struct Entity
 
 	enum Weapon
 	{
-		STICK,
-		HAMMER
+		STICK = 0,
+		CLAW,
+		HAMMER,
+		FANG
 	};
 
 	enum MovementControls
@@ -49,10 +52,18 @@ struct Entity
 		KEY_BACK = 8
 	};
 
+	~Entity() {}
+
 	void setStartingPosition();
 	void setEnemyType(Type& monsterType);
 	void typeAsString();
 	void move(void);
-	bool collision(Entity& player, Entity& monster);
+	bool collision(Entity& player, Entity& ent);
 	void encounter(Entity& player, Entity& ent);
+	void battle(Entity& player, Entity& ent);
+	void checkDefeat();
+	int damage();
+	void weaponAsString();
+	void lootGen();
+
 };

@@ -47,7 +47,7 @@ std::ostream& operator<<(std::ostream& os, const Entity& ent)
 	return os;
 }
 
-bool startMenu()
+void startMenu()
 {
 	int choice; 
 
@@ -56,9 +56,7 @@ bool startMenu()
 	std::cout << "2. Quit Game" << std::endl;
 	std::cout << "Selection: ";
 	std::cin >> choice;
-	if (choice == 1)
-		return true;
-	else
+	if (choice == 2)
 		exit(EXIT_SUCCESS);
 }
 
@@ -119,6 +117,7 @@ void gameLoop()
 		}
 
 		gotoxy(0, 0);
+
 		//player entity was not updating position in real time, so clearing and pushing contents again will update all entities position as in real time
 		entities.clear();
 	}

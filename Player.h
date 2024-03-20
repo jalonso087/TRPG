@@ -11,6 +11,7 @@ struct Player : public Entity
 		potions = 1;
 		gold = 0;
 		currentWeapon = STICK;
+		weaponAsString();
 		typeAsString();
 		marker = 'P';
 	}

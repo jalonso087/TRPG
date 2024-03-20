@@ -10,7 +10,10 @@ struct Goblin : public Entity
 		type = GOBLIN;
 		maxHP = (type * 2) + 5;
 		currentHP = maxHP;
+		currentWeapon = CLAW;
+		weaponAsString();
 		typeAsString();
 		marker = 'G';
 	}
+	~Goblin() {}
 };

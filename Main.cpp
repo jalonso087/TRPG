@@ -47,24 +47,11 @@ std::ostream& operator<<(std::ostream& os, const Entity& ent)
 	return os;
 }
 
-void startMenu()
-{
-	int choice; 
-
-	std::cout << "Welcome to <TRPG>" << std::endl;
-	std::cout << "1. Start Game" << std::endl; 
-	std::cout << "2. Quit Game" << std::endl;
-	std::cout << "Selection: ";
-	std::cin >> choice;
-	if (choice == 2)
-		exit(EXIT_SUCCESS);
-}
-
 void gameLoop()
 {
 	std::vector<Entity> entities;
 
-	startMenu();
+	//startMenu();
 
 	Entity	entity;
 	Player	player;
@@ -76,16 +63,19 @@ void gameLoop()
 	Town	town;
 	Dungeon dungeon;
 
+	entity.startMenu();
+
 	system("CLS");
+
+	entities.push_back(rat);
+	entities.push_back(goblin);
+	entities.push_back(thief);
+	entities.push_back(wolf);
+	entities.push_back(town);
+	entities.push_back(dungeon);
 	
 	while (player.defeated == false)
 	{
-		entities.push_back(rat);
-		entities.push_back(goblin);
-		entities.push_back(thief);
-		entities.push_back(wolf);
-		entities.push_back(town);
-		entities.push_back(dungeon);
 		entities.push_back(player);
 		
 		std::cout << player;
@@ -99,9 +89,9 @@ void gameLoop()
 
 				for (const auto& e : entities)
 				{
-					Map[e.posX][e.posY] = e.marker;
+					if(!e.defeated)
+						Map[e.posX][e.posY] = e.marker;
 				}
-
 				std::cout << Map[i][j];
 			}
 			std::cout << std::endl;
@@ -113,13 +103,14 @@ void gameLoop()
 
 		for (auto& e : entities) 
 		{ 
-			entity.collision(player, e); 
+			entity.collision(player, e);
 		}
 
 		gotoxy(0, 0);
 
 		//player entity was not updating position in real time, so clearing and pushing contents again will update all entities position as in real time
-		entities.clear();
+		//test 1
+		//entities.clear();
 	}
 }
 

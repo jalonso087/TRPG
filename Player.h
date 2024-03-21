@@ -14,5 +14,6 @@ struct Player : public Entity
 		weaponAsString();
 		typeAsString();
 		marker = 'P';
+		runAway = false;
 	}
 };

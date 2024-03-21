@@ -17,6 +17,7 @@ struct Entity
 	std::string typeString;
 	bool defeated = false;
 	char marker{ ' ' };
+	bool runAway;
 
 	enum Type
 	{
@@ -66,5 +67,13 @@ struct Entity
 	void weaponAsString();
 	void lootGen();
 	void attack(Entity& player, Entity& monster);
+	void usePotion();
+	void exitGame();
+	void startMenu();
+	void attackLoop(Entity& player, Entity& ent);
+	void inn(Entity& player);
+	void shop(Entity& player);
+	void assignWeapon(int weapon);
+	void moveEntity();
 
 };
